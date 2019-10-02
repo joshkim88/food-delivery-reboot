@@ -2,19 +2,38 @@ class Router
   def initialize(controllers = {})
     @meals_controller = controllers[:meals]
     @customers_controller = controllers[:customers]
+    @sessions_controller = controllers[:sessions]
     @running = true
   end
 
   def run
-    puts "Welcome to the Foodo!"
-    puts "           --           "
+    # LOGIN
+    # if login failed, we're not showing any actions ==> AUTHentication
+    # else, we checked if user is a manager
+      # if manager => show all actions ==> AUTHorization
+      # else => show only delivery guys actions
 
-    while @running
-      display_tasks
-      action = gets.chomp.to_i
-      print `clear`
-      route_action(action)
+    auth_user = @sessions_controller.login
+
+    # binding.pry
+
+    # authorization process now
+    if auth_user.manager?
+      puts "SHOW MANAGER ACTIONS"      
+    else
+      puts "SHOW DELIVERY GUY ACTIONS"
     end
+
+
+    # puts "Welcome to the Foodo!"
+    # puts "           --           "
+
+    # while @running
+    #   display_tasks
+    #   action = gets.chomp.to_i
+    #   print `clear`
+    #   route_action(action)
+    # end
   end
 
   private
